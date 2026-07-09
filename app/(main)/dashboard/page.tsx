@@ -6,15 +6,14 @@ import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { authClient } from "@/lib/auth-client"
 
-import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+
 import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
-import { SimulationPanel } from "@/components/simulation-panel"
-import { UssdSimulator } from "@/components/ussd-simulator"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { Loader2 } from "lucide-react"
+
 
 export default function Page() {
   const router = useRouter()
@@ -53,48 +52,24 @@ export default function Page() {
 
   return (
     <div style={brandStyles} className="min-h-screen bg-background">
-      <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          } as React.CSSProperties
-        }
-      >
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
           <div className="flex flex-1 flex-col">
             <div className="@container/main flex flex-1 flex-col gap-6 py-6">
               
+
+
               {/* Operational KPI cards */}
               <SectionCards />
+
               
-              {/* Dynamic Grid Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-4 lg:px-6">
-                
-                {/* Left/Main Column: Rainfall Chart & Policy Table */}
-                <div className="lg:col-span-2 space-y-6 flex flex-col">
-                  <ChartAreaInteractive />
-                  
-                  <div className="flex-1">
-                    <DataTable data={policies ?? []} />
-                  </div>
-                </div>
-
-                {/* Right/Demonstrator Column: Simulation Panel & USSD Phone Widget */}
-                <div className="lg:col-span-1 space-y-6">
-                  {/* Platform administrators and demonstrators get the controls */}
-                  <SimulationPanel />
-                  <UssdSimulator />
-                </div>
-
+              {/* Full Width Layout: Weather Chart & Policies Registry */}
+              <div className="space-y-6 px-4 lg:px-6">
+                <ChartAreaInteractive />
+                <DataTable data={policies ?? []} />
               </div>
+
 
             </div>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
     </div>
   )
 }

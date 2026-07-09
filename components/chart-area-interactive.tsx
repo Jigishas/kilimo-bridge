@@ -27,9 +27,10 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartAreaInteractive() {
+export function ChartAreaInteractive({ county = "Kitui" }: { county?: string }) {
   const simState = useQuery(api.simulation.getState)
-  const readings = useQuery(api.simulation.getWeatherReadings, { county: "Kitui" })
+  const readings = useQuery(api.simulation.getWeatherReadings, { county })
+
 
   const currentDay = simState?.dayIndex ?? 18
   const scenarioName = simState?.scenarioName ?? "Kitui Drought 2026"

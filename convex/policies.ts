@@ -59,26 +59,59 @@ export const list = query({
 export const getStats = query({
   args: {},
   handler: async (ctx) => {
-    const tenantId = await requireTenant(ctx);
+    const user = await getAuthenticatedUser(ctx);
+    if (!user) {
+      return {
+        activeCount: 0,
+        paidOutCount: 0,
+        totalExposure: 0,
+        totalPayouts: 0,
+        activePremium: 0,
+      };
+    }
 
-    const activePolicies = await ctx.db
-      .query("policies")
-      .withIndex("by_tenant_status", (q) =>
-        q.eq("tenantId", tenantId).eq("status", "ACTIVE")
-      )
-      .collect();
+    let activePolicies;
+    let paidOutPolicies;
+    let payouts;
 
-    const paidOutPolicies = await ctx.db
-      .query("policies")
-      .withIndex("by_tenant_status", (q) =>
-        q.eq("tenantId", tenantId).eq("status", "PAID_OUT")
-      )
-      .collect();
+    if (user.role === "platform_admin" || !user.tenantId) {
+      // Platform admin: aggregate across all tenants
+      activePolicies = await ctx.db
+        .query("policies")
+        .filter((q) => q.eq(q.field("status"), "ACTIVE"))
+        .collect();
 
-    const payouts = await ctx.db
-      .query("payouts")
-      .withIndex("by_tenant", (q) => q.eq("tenantId", tenantId))
-      .collect();
+      paidOutPolicies = await ctx.db
+        .query("policies")
+        .filter((q) => q.eq(q.field("status"), "PAID_OUT"))
+        .collect();
+
+      payouts = await ctx.db
+        .query("payouts")
+        .collect();
+    } else {
+      // Tenant admin: filter by tenantId
+      const tenantId = user.tenantId;
+
+      activePolicies = await ctx.db
+        .query("policies")
+        .withIndex("by_tenant_status", (q) =>
+          q.eq("tenantId", tenantId).eq("status", "ACTIVE")
+        )
+        .collect();
+
+      paidOutPolicies = await ctx.db
+        .query("policies")
+        .withIndex("by_tenant_status", (q) =>
+          q.eq("tenantId", tenantId).eq("status", "PAID_OUT")
+        )
+        .collect();
+
+      payouts = await ctx.db
+        .query("payouts")
+        .withIndex("by_tenant", (q) => q.eq("tenantId", tenantId))
+        .collect();
+    }
 
     const totalExposure = activePolicies.reduce((sum, p) => sum + p.sumInsured, 0);
     const totalPayouts = payouts.reduce((sum, p) => sum + p.amount, 0);
@@ -93,6 +126,7 @@ export const getStats = query({
     };
   },
 });
+
 
 /**
  * Lists all active/paid out policies for a farmer by phone.
@@ -201,3 +235,75 @@ export const activate = internalMutation({
     return args.policyId;
   },
 });
+
+/**
+ * Manually registers a farmer (if new) and issues an active crop insurance policy.
+ */
+export const createManualPolicy = mutation({
+  args: {
+    farmerName: v.string(),
+    farmerPhone: v.string(),
+    farmerCounty: v.string(),
+    productId: v.id("products"),
+    acres: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const tenantId = await requireTenant(ctx);
+
+    // 1. Get or create farmer profile
+    let farmer = await ctx.db
+      .query("farmers")
+      .withIndex("by_phone", (q) => q.eq("phone", args.farmerPhone))
+      .unique();
+
+    if (!farmer) {
+      const farmerId = await ctx.db.insert("farmers", {
+        name: args.farmerName,
+        phone: args.farmerPhone,
+        county: args.farmerCounty,
+        language: "en",
+        consentRecord: {
+          text: "Consent captured via offline manual agent registration form.",
+          acceptedAt: Date.now(),
+        },
+      });
+      farmer = (await ctx.db.get(farmerId))!;
+    }
+
+
+    // 2. Get product details to compute premium and sum insured
+    const product = await ctx.db.get(args.productId);
+    if (!product) throw new Error("Product not found");
+
+    const premiumPaid = product.premiumPerAcre * args.acres;
+    const sumInsured = product.sumInsuredPerAcre * args.acres;
+
+    // Retrieve current simulation day
+    const simState = await ctx.db.query("simulationState").unique();
+    const currentDay = simState?.dayIndex ?? 18;
+
+    // 3. Create active policy
+    const policyId = await ctx.db.insert("policies", {
+      tenantId,
+      farmerId: farmer._id,
+      productId: product._id,
+      acres: args.acres,
+      premiumPaid,
+      sumInsured,
+      status: "ACTIVE",
+      purchaseDay: currentDay,
+    });
+
+    // 4. Log audit event
+    await audit(ctx, tenantId, {
+      eventType: "POLICY_ACTIVATED",
+      actor: "tenant_admin",
+      entityRefs: { policyId, farmerId: farmer._id },
+      snapshot: { acres: args.acres, premiumPaid, sumInsured, productId: product._id },
+    });
+
+    return policyId;
+  },
+});
+
+
