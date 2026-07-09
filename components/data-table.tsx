@@ -175,7 +175,7 @@ export function DataTable({ data }: { data: PolicyRow[] }) {
           )
         }
         return (
-          <Badge variant="outline" className="flex w-fit items-center gap-1.5 border-zinc-500/20 text-zinc-500 bg-zinc-500/10 dark:bg-zinc-950/20 dark:text-zinc-400 py-0.5 px-2">
+          <Badge variant="outline" className="flex w-fit items-center gap-1.5 border-muted-foreground/20 text-muted-foreground bg-muted py-0.5 px-2">
             <ClockIcon className="size-3" />
             Pending M-Pesa
           </Badge>

@@ -1,14 +1,11 @@
 "use client";
 
-import { Search, type LucideIcon } from "lucide-react";
-
+import Link from "next/link";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useState } from "react";
-import Link from "next/link";
 
 export function NavMain({
   items,
@@ -20,25 +17,19 @@ export function NavMain({
     isActive?: boolean;
   }[];
 }) {
-  const [open, setOpen] = useState(false);
   return (
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton onClick={() => setOpen(true)}>
-            <Search />
-            <span>Search</span>
+    <SidebarMenu>
+      {items.map((item) => (
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton
+            isActive={item.isActive}
+            render={<Link href={item.url} />}
+          >
+            {item.icon}
+            <span>{item.title}</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        {items.map((item) => (
-          <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton isActive={item.isActive}>
-              <Link href={item.url}>
-                {item.icon}
-                <span>{item.title}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
- );
-}
+      ))}
+    </SidebarMenu>
+  );
+}

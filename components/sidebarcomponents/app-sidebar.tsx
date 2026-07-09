@@ -304,7 +304,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     onChange={(e) => setProdName(e.target.value)}
                     required
                     placeholder="e.g. Maize Index Cover"
-                    className="h-8 bg-zinc-950 border-zinc-800"
+                    className="h-8"
                   />
                 </div>
 
@@ -316,7 +316,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       onChange={(e) => setProdCounty(e.target.value)}
                       required
                       placeholder="e.g. Kitui"
-                      className="h-8 bg-zinc-950 border-zinc-800"
+                      className="h-8"
                     />
                   </div>
                   <div className="space-y-1">
@@ -326,7 +326,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       onChange={(e) => setProdCrop(e.target.value)}
                       required
                       placeholder="e.g. maize"
-                      className="h-8 bg-zinc-950 border-zinc-800"
+                      className="h-8"
                     />
                   </div>
                 </div>
@@ -339,7 +339,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       value={prodPremium}
                       onChange={(e) => setProdPremium(e.target.value)}
                       required
-                      className="h-8 bg-zinc-950 border-zinc-800 font-mono"
+                      className="h-8 font-mono"
                     />
                   </div>
                   <div className="space-y-1">
@@ -349,7 +349,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       value={prodSumInsured}
                       onChange={(e) => setProdSumInsured(e.target.value)}
                       required
-                      className="h-8 bg-zinc-950 border-zinc-800 font-mono"
+                      className="h-8 font-mono"
                     />
                   </div>
                 </div>
@@ -362,7 +362,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       value={prodP1Threshold}
                       onChange={(e) => setProdP1Threshold(e.target.value)}
                       required
-                      className="h-8 bg-zinc-950 border-zinc-800 font-mono"
+                      className="h-8 font-mono"
                     />
                   </div>
                   <div className="space-y-1">
@@ -372,7 +372,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       value={prodP2Threshold}
                       onChange={(e) => setProdP2Threshold(e.target.value)}
                       required
-                      className="h-8 bg-zinc-950 border-zinc-800 font-mono"
+                      className="h-8 font-mono"
                     />
                   </div>
                 </div>
@@ -392,7 +392,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     onChange={(e) => setFarmerName(e.target.value)}
                     required
                     placeholder="e.g. John Mutua"
-                    className="h-8 bg-zinc-950 border-zinc-800"
+                    className="h-8"
                   />
                 </div>
 
@@ -404,7 +404,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       onChange={(e) => setFarmerPhone(e.target.value)}
                       required
                       placeholder="+254711000001"
-                      className="h-8 bg-zinc-950 border-zinc-800 font-mono"
+                      className="h-8 font-mono"
                     />
                   </div>
                   <div className="space-y-1">
@@ -414,7 +414,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       onChange={(e) => setFarmerCounty(e.target.value)}
                       required
                       placeholder="e.g. Kitui"
-                      className="h-8 bg-zinc-950 border-zinc-800"
+                      className="h-8"
                     />
                   </div>
                 </div>
@@ -425,7 +425,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <select
                       value={selectedProductId}
                       onChange={(e) => setSelectedProductId(e.target.value)}
-                      className="w-full h-8 px-2 rounded-lg bg-zinc-950 border border-zinc-800 text-foreground text-xs"
+                      className="w-full h-8 px-2 rounded-lg bg-background border border-input text-foreground text-xs"
                     >
                       {products.map((p) => (
                         <option key={p._id} value={p._id}>
@@ -447,7 +447,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     value={policyAcres}
                     onChange={(e) => setPolicyAcres(e.target.value)}
                     required
-                    className="h-8 bg-zinc-950 border-zinc-800 font-mono"
+                    className="h-8 font-mono"
                   />
                 </div>
 

@@ -136,15 +136,15 @@ export function UssdSimulator() {
       
       <CardContent className="flex flex-col items-center justify-center p-4">
         {/* Smartphone Wrapper */}
-        <div className="relative w-[280px] h-[500px] bg-zinc-900 rounded-[36px] p-3 shadow-2xl border-4 border-zinc-800 flex flex-col overflow-hidden">
+        <div className="relative w-[280px] h-[500px] bg-card rounded-[36px] p-3 shadow-2xl border-4 border-border flex flex-col overflow-hidden">
           {/* Speaker / Camera notches */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-4 bg-zinc-900 rounded-b-xl z-20 flex justify-center items-center gap-2">
-            <div className="w-10 h-1 bg-zinc-700 rounded-full"></div>
-            <div className="size-1.5 bg-zinc-800 rounded-full"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-4 bg-card rounded-b-xl z-20 flex justify-center items-center gap-2">
+            <div className="w-10 h-1 bg-muted-foreground/40 rounded-full"></div>
+            <div className="size-1.5 bg-muted-foreground/30 rounded-full"></div>
           </div>
 
           {/* Screen StatusBar */}
-          <div className="h-6 px-4 pt-1 text-[9px] text-zinc-500 font-medium flex justify-between items-center z-10">
+          <div className="h-6 px-4 pt-1 text-[9px] text-muted-foreground font-medium flex justify-between items-center z-10">
             <span>9:41 AM</span>
             <div className="flex gap-1.5 items-center">
               <WifiIcon className="size-2.5" />
@@ -154,30 +154,30 @@ export function UssdSimulator() {
           </div>
 
           {/* Screen Content */}
-          <div className="flex-1 bg-black rounded-[24px] p-4 flex flex-col justify-between border border-zinc-950 font-sans relative">
+          <div className="flex-1 bg-muted rounded-[24px] p-4 flex flex-col justify-between border border-border font-sans relative">
             
             {!isDialed ? (
               // Off Screen / Dial Pad
               <div className="flex-1 flex flex-col justify-between py-4">
                 <div className="space-y-4">
-                  <div className="text-center text-zinc-500 text-[10px] uppercase font-bold tracking-wider pt-2">
+                  <div className="text-center text-muted-foreground text-[10px] uppercase font-bold tracking-wider pt-2">
                     Enter phone & dial shortcode
                   </div>
                   
                   {/* Phone input */}
                   <div className="space-y-1">
-                    <label className="text-[9px] text-zinc-400 font-semibold uppercase tracking-wider block">Farmer Phone</label>
+                    <label className="text-[9px] text-muted-foreground font-semibold uppercase tracking-wider block">Farmer Phone</label>
                     <Input 
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       placeholder="+254711000001"
-                      className="h-8 bg-zinc-950 border-zinc-800 text-xs text-foreground placeholder:text-zinc-700 font-mono"
+                      className="h-8 text-xs text-foreground font-mono"
                     />
                   </div>
 
                   {/* USSD Shortcode display */}
-                  <div className="p-3 bg-zinc-950 border border-zinc-900 rounded-lg text-center">
-                    <div className="text-[10px] text-zinc-600">Dialing Target</div>
+                  <div className="p-3 bg-muted border border-border rounded-lg text-center">
+                    <div className="text-[10px] text-muted-foreground">Dialing Target</div>
                     <div className="text-base font-bold text-primary font-mono tracking-wider mt-0.5">*384*4#</div>
                   </div>
                 </div>
@@ -198,7 +198,7 @@ export function UssdSimulator() {
                 {/* Dialogue Area */}
                 <div className="flex-1 flex flex-col">
                   {/* Menu text panel */}
-                  <div className="flex-1 bg-zinc-950 rounded-lg border border-zinc-900 p-3 text-zinc-200 font-mono leading-relaxed overflow-y-auto whitespace-pre-line text-[11px]">
+                  <div className="flex-1 bg-muted rounded-lg border border-border p-3 text-foreground font-mono leading-relaxed overflow-y-auto whitespace-pre-line text-[11px]">
                     {cleanMenuText(menuText)}
                   </div>
                 </div>
@@ -213,7 +213,7 @@ export function UssdSimulator() {
                         placeholder="Enter selection..."
                         disabled={isLoading}
                         autoFocus
-                        className="flex-1 h-8 bg-zinc-950 border-zinc-800 text-xs text-foreground font-mono"
+                        className="flex-1 h-8 text-xs text-foreground font-mono"
                       />
                       <Button 
                         type="submit" 
@@ -227,7 +227,8 @@ export function UssdSimulator() {
                   ) : (
                     <Button 
                       onClick={handleHangup}
-                      className="w-full bg-zinc-800 hover:bg-zinc-700 text-foreground font-semibold rounded-lg h-8"
+                      variant="secondary"
+                      className="w-full font-semibold rounded-lg h-8"
                     >
                       Dismiss
                     </Button>
@@ -251,7 +252,7 @@ export function UssdSimulator() {
 
           {/* Home Button notch */}
           <div className="h-6 flex justify-center items-center">
-            <div className="w-20 h-1 bg-zinc-700 rounded-full"></div>
+            <div className="w-20 h-1 bg-muted-foreground/40 rounded-full"></div>
           </div>
         </div>
 

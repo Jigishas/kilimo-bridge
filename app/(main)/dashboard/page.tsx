@@ -30,7 +30,7 @@ export default function Page() {
 
   if (isSessionPending || tenantData === undefined) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-zinc-400 gap-3">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-muted-foreground gap-3">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <span className="text-sm font-medium tracking-wide">Loading secure dashboard...</span>
       </div>

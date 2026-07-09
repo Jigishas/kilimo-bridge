@@ -29,7 +29,7 @@ export default function ProductStatsPage(props: { params: Promise<{ productId: s
 
   if (isSessionPending || tenantData === undefined || product === undefined || policies === undefined) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-zinc-400 gap-3">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-muted-foreground gap-3">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <span className="text-sm font-medium tracking-wide">Loading scheme statistics...</span>
       </div>
@@ -38,7 +38,7 @@ export default function ProductStatsPage(props: { params: Promise<{ productId: s
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-zinc-400 gap-3 p-6 text-center">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-muted-foreground gap-3 p-6 text-center">
         <h2 className="text-lg font-bold text-foreground">Scheme not found</h2>
         <p className="text-xs text-muted-foreground">The requested product scheme tariff does not exist.</p>
         <Link href="/dashboard" className="text-xs underline text-primary">Return to dashboard</Link>
